@@ -6,103 +6,15 @@
 /*   By: odelvaux <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 18:32:27 by odelvaux          #+#    #+#             */
-/*   Updated: 2020/02/23 05:22:07 by odelvaux         ###   ########.fr       */
+/*   Updated: 2020/02/23 22:57:38 by odelvaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <unistd.h>
+#include "mylib.h"
 
-/*
- *	STRLEN - Length of the string.
- */
-
-int		ft_strlen(char *str)
-{
-	int i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-/*
- *	STRCPY - Copy strings.
- */
-
-char	*ft_strcpy(char *dest, char *src)
-{
-	int i;
-
-	i = 0;
-	while (src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
-
-/*
- *	STRCAT - Concatenate string into string.
- */
-
-char	*ft_strcat(char *dest, char *src)
-{
-	int i;
-	int j;
-
-	i = 0;
-	while (dest[i])
-		i++;
-	j = 0;
-	while (src[j])
-	{
-		dest[i + j] = src[j];
-		j++;
-	}
-	dest[i + j] = '\0';
-	return (dest);
-}
-
-/*
- *	STRSTR - Find string into string.
- */
-
-char	*ft_strstr(char *str, char *to_find)
-{
-	int i;
-	int j;
-
-	i = 0;
-	j = 0;
-	if (to_find[i] == '\0')
-		return (str);
-	while (str[i])
-	{
-		if (str[i] == to_find[j])
-		{
-			i++;
-			j++;
-			if (to_find[j] == '\0')
-				return (str + i - j);
-		}
-		else
-		{
-			i = i - j;
-			j = 0;
-			i++;
-		}
-	}
-	return (0);
-}
-
-/*
- *	POWER - Calculate power of a number.
- */
-
-int	ft_iterative_power(int nb, int power)
+int		ft_iterative_power(int nb, int power)
 {
 	int res;
 
@@ -116,10 +28,6 @@ int	ft_iterative_power(int nb, int power)
 	}
 	return (res);
 }
-
-/*
- *	ITOA - CONVERT INTEGER TO ASCII.
- */
 
 int		ft_len(long nb)
 {
@@ -141,7 +49,7 @@ int		ft_len(long nb)
 
 char	*ft_itoa(int nb)
 {
-	char *str;
+	char	*str;
 	long	n;
 	int		i;
 
@@ -162,18 +70,13 @@ char	*ft_itoa(int nb)
 	}
 	while (n > 0)
 	{
-		str[i] = 48 + (n % 10);
+		str[i--] = 48 + (n % 10);
 		n = n / 10;
-		i--;
 	}
 	return (str);
 }
 
-/*
- *	ATOI - Convert ASCII TO INTEGER.
- */
-
-int	ft_atoi(char *str)
+int		ft_atoi(char *str)
 {
 	int i;
 	int pon;
@@ -198,4 +101,18 @@ int	ft_atoi(char *str)
 	}
 	res = res * pon;
 	return (res);
+}
+
+void	ft_write_number_power(int size, char *buffer)
+{
+	int		power_size;
+	char	*power_size_char;
+
+	if (size >= 3)
+	{
+		power_size = ft_iterative_power(1000, size / 3);
+		power_size_char = ft_itoa(power_size);
+		write(1, " ", 1);
+		ft_write_nbr_into_ltrs(ft_strstr(buffer, power_size_char), buffer);
+	}
 }
